@@ -7,6 +7,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { MovieDetails } from "./Pages/MovieDetalis/MovieDetails";
 import backgroundMain from './assets/img/main_background.png';
 import { fetchAllFilms } from "./service/moviesService";
+import { Auth } from "./Pages/Auth/Auth";
 
 export function Home() {
     const location = useLocation();
@@ -28,7 +29,7 @@ export function Home() {
     useEffect(() => {
         const wrapper = document.querySelector('.wrapper');
         if (wrapper) {
-            let opacity = '0.85'; // Default opacity for main page
+            let opacity = '0.85';
           if (location.pathname === '/') {
             setBackgroundImage(backgroundMain);
           } else if (location.pathname.startsWith('/movies/')) {
@@ -47,7 +48,6 @@ export function Home() {
             setBackgroundImage('none');
           }
       
-          // Set the CSS variable for the background image
           wrapper.style.setProperty('--background-image', `url(${backgroundImage})`);
           wrapper.style.setProperty('--background-opacity', opacity);
 
@@ -63,6 +63,7 @@ export function Home() {
                     <Route exact path="/" element={<HomePage/>} />
                     <Route path="/Billboard" element={<BillboardPage/>} />
                     <Route path="/movies/:movieName" element={<MovieDetails/>}/>
+                    <Route path="/Auth" element={<Auth/>}/>
                 </Routes>
             </main>
             <Footer/>

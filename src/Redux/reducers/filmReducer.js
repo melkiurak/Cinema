@@ -4,7 +4,6 @@ const initialState = {
     films: [],
     actors: [],
     selectedGenres: '',
-    filter: 'Все',
     searchQueary: '',
     isLoggenIn: false,
 }
@@ -15,11 +14,8 @@ const filmsSlice = createSlice({
       setFilms(state, action) {
         state.films = action.payload
       },
-      setFilter(state, action) {
-        state.filter = action.payload
-      }
     }
   })
   
-  export const { setFilms, setFilter } = filmsSlice.actions
+  export const { setFilms } = filmsSlice.actions
   export default filmsSlice.reducer

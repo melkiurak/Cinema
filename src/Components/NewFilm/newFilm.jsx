@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchNewFilms } from "../../service/moviesService";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setFilms, setFilterAction } from "../../Redux/actions/actions";
+import { setFilms } from "../../Redux/actions/actions";
 
 const getInitialVisibleCount = () => {
     if (window.innerWidth < 768) return 6;
@@ -13,17 +13,17 @@ const getInitialVisibleCount = () => {
 export function NewFilm() {
     const [visibleCount, setVisibleCount] = useState(getInitialVisibleCount());
     const [menuFilter, setMenuFilter] = useState(false);
+    const [filterGenres, setFilterGenres] = useState('Все');
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const filterFromStore = useSelector(state => state.films.filter);
     const films = useSelector(state => state.films.films);
-    
+
     const handleOpenMenuFilter = () => {
         setMenuFilter(!menuFilter);
     };
 
     const handleFilter = (filter) => {
-        dispatch(setFilterAction(filter));
+        setFilterGenres(filter);
         setMenuFilter(false);
     };
 
@@ -33,17 +33,17 @@ export function NewFilm() {
     };
 
     const filterFilms = films.filter((film) => {
-        if (!filterFromStore || filterFromStore === 'Все') {
+        if (filterGenres === 'Все') {
             return true;
         }
         const genresArray = film.genres.map(genre => genre.trim());
-        return genresArray.includes(filterFromStore);
+        return genresArray.includes(filterGenres);
     });
 
     const handleAllFilm = () => {
         setVisibleCount(prevCount => prevCount + 8);
     };
-    
+
     useEffect(() => {
         async function fetchData() {
             const data = await fetchNewFilms();
@@ -59,7 +59,6 @@ export function NewFilm() {
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
-
 
     return (
         <div className="mt-[30px]">
@@ -77,7 +76,7 @@ export function NewFilm() {
                     <div className={`${menuFilter ? 'block' : 'max-md:hidden'}`}>
                         <ul className="flex flex-wrap gap-x-[30px] max-LaptopL:gap-x-[25px] max-lg:gap-x-[20px] max-md:gap-x-[15px] max-md:gap-y-[10px] max-md:justify-center items-center">
                             {['Все', 'Боевик', 'Приключения', 'Комедия', 'Фантастика', 'Триллеры', 'Драма'].map((filter) => (
-                                <li key={filter} className={`filter ${filterFromStore === filter ? 'text-white' : 'text-[#6D707A]'}`}>
+                                <li key={filter} className={`filter ${filterGenres === filter ? 'text-white' : 'text-[#6D707A]'}`}>
                                     <button onClick={() => handleFilter(filter)}>{filter}</button>
                                 </li>
                             ))}

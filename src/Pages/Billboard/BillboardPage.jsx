@@ -7,16 +7,16 @@ import { BiSolidUpArrow,BiSolidDownArrow } from "react-icons/bi";
 import { IoIosCheckmark } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setFilterAction } from "../../Redux/actions/actions";
+import { setFilterAction, setFilms } from "../../Redux/actions/actions";
 
 export function BillboardPage() {
-    const [film, setFilm] = useState([]);
     const [openFilter, setOpenFilter] = useState(false);
     const [openFilterDate, setOpenFilterDate] = useState(false);
     const [dateFilter, setDateFilter] = useState([]);
+    const [genresFilter, setGenresFilter] = useState([]);
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const genresFilter = useSelector((state) => state.state.films.filter);
+    const films = useSelector(state => state.films.films);
     const createDateRange = (year, startMonth, endMonth) => ({
         start: new Date(year, startMonth, 1),
         end: new Date(year, endMonth + 1, 0)
@@ -51,29 +51,30 @@ export function BillboardPage() {
     };
     const handleFilterChange = (value, type) => {
         if (type === 'genre') {
-            dispatch(setFilterAction(value));
+            setGenresFilter(prev => 
+                prev.includes(value) ? prev.filter(d => d !== value) : [...prev, value]
+            );
         } else if (type === 'date') {
             setDateFilter(prev => 
                 prev.includes(value) ? prev.filter(d => d !== value) : [...prev, value]
             );
         }
-    };
+    };    
 
     const filterFilms = (films) => {
         if (genresFilter.length === 0 && dateFilter.length === 0) {
             return films;
         }
-
+    
         const filteredByGenre = genresFilter.length === 0 ? films : films.filter(film => {
             const genresArr = film.genres.map(genre => genre.trim());
             return genresFilter.some(filter => genresArr.includes(filter));
         });
-
+    
         const selectedRanges = monthRanges.filter(range => dateFilter.includes(range.label));
-        const filteredByDate = dateFilter.length === 0 ? filteredByGenre : filterFilmsByDateRange(filteredByGenre, selectedRanges);
-
-        return filteredByDate;
+        return dateFilter.length === 0 ? filteredByGenre : filterFilmsByDateRange(filteredByGenre, selectedRanges);
     };
+    
 
     const groupedFilms = (films) => {
         return films.reduce((acc, film) => {
@@ -100,12 +101,12 @@ export function BillboardPage() {
         async function fetchData() {
             const data = await fetchAllFilms();
             const sortData = data.sort((a, b) => new Date(b.date) - new Date(a.date));
-            setFilm(sortData);
+            dispatch(setFilms(sortData));
         }
         fetchData();
-    }, []);
+    }, [dispatch]);
 
-    const filteredFilms = filterFilms(film);
+    const filteredFilms = filterFilms(films);
     const groupedFilteredFilms = groupedFilms(filteredFilms);
 
     return (

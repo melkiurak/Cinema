@@ -2,13 +2,24 @@
 
 export function MovieComments({film}) {
     const percentage = film.comments.total > 0 ? (film.comments.positive / film.comments.total) * 100 : 0;
+
+ 
     function getBackgroundColor() {
         if (percentage >= 60) {
-            return "#326339"; // Green
+            return "#326339"; 
         } else if (percentage >= 50) {
-            return "#FFF0654D"; // Yellow
+            return "#FFF0654D"; 
         } else {
-            return "#642C36"; // Red
+            return "#642C36"; 
+        }
+    }
+    function getTextColor() {
+        if (percentage >= 60) {
+            return "#57D043"; 
+        } else if (percentage >= 50) {
+            return "#FFF065"; 
+        } else {
+            return "#E04141"; 
         }
     }
     return (
@@ -44,8 +55,8 @@ export function MovieComments({film}) {
                 </button>
                 <button className="py-[24px] px-[20px] bg-[#1B2133] rounded-[10px] flex items-center gap-[40px] h-full text-[20px] font-semibold text-white">
                     <span>Процент</span>
-                    <div className={` rounded-[5px] flex items-center justify-center min-w-[40px] min-h-[40px] px-2 py-2 ${getBackgroundClass(percentage)}`}>
-                        <span className="text-[15px] font-medium text-[#3657CB]"> {percentage.toFixed(0)}%</span>
+                    <div className={` rounded-[5px] flex items-center justify-center min-w-[40px] min-h-[40px] px-2 py-2`} style={{ backgroundColor: getBackgroundColor() }}>
+                        <span className="text-[15px] font-medium text-[#3657CB]" style={{color: getTextColor()}}> {percentage.toFixed(0)}%</span>
                     </div>     
                 </button>
             </div>
