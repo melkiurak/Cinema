@@ -7,7 +7,6 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import { MovieDetails } from "./Pages/MovieDetalis/MovieDetails";
 import backgroundMain from './assets/img/main_background.png';
 import { fetchAllFilms } from "./service/moviesService";
-import { Auth } from "./Pages/Auth/Auth";
 
 export function Home() {
     const location = useLocation();
@@ -63,7 +62,6 @@ export function Home() {
                     <Route exact path="/" element={<HomePage/>} />
                     <Route path="/Billboard" element={<BillboardPage/>} />
                     <Route path="/movies/:movieName" element={<MovieDetails/>}/>
-                    <Route path="/Auth" element={<Auth/>}/>
                 </Routes>
             </main>
             <Footer/>

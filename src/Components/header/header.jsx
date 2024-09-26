@@ -1,22 +1,28 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Search } from "./Search/search";
+import { Auth } from './Auth/Auth'
+import logo from '../../assets/img/logo.png'; 
+
 import { SlSocialVkontakte } from "react-icons/sl";
 import { FaInstagram, FaTwitter  } from "react-icons/fa";
 import { ImFacebook } from "react-icons/im";
 import { IoIosSearch } from "react-icons/io";
 import { RxCross2 } from "react-icons/rx";
 
-import logo from '../../assets/img/logo.png'; // Путь к вашему изображению
-import { Search } from "./Search/search";
-
 export function Header() {
     const [burgerOpen, setBurgerOpen] = useState(false);
     const [search, setSearch] = useState(false);
+    const [auth, setAuth] = useState(false);
     const handelSearch = () => {
         setSearch(true);
     } 
-    const handelCloseSearch = () => {
+    const handelClose = () => {
         setSearch(false);
+        setAuth(false);
+    }
+    const handelAuth = () => {
+        setAuth(true)
     }
     const handelOpenBurger = () => {
         setBurgerOpen(!burgerOpen);
@@ -68,11 +74,16 @@ export function Header() {
                 </nav>
                 <div className="max-w-[205px] h-full w-full flex justify-between max-LaptopL:hid">
                     <button className="w-[55px]  max-md:w-[28.56px] h-[52px] max-LaptopL:h-[42px] max-md:h-[27px] bg-white flex items-center justify-center color-[#3657CB] rounded-xl max-md:rounded-[5px] text-[#3657CB] font-bold text-xl max-LaptopL:absolute left-10 max-md:left-11 top-0" onClick={() => handelSearch()}><IoIosSearch/></button>
-                    <button className="w-[138px] max-md:w-[66px]  h-[53px]  max-LaptopL:h-[42px] max-md:h-[27px]  bg-[#3657CB] border-none shadow-button-shadow rounded-xl max-md:rounded-[5px] text-white font-bold leading-[26.64px] max-LaptopL:absolute right-2 top-0"><Link to="/Auth">Войти</Link></button>
+                    <button className="w-[138px] max-md:w-[66px]  h-[53px]  max-LaptopL:h-[42px] max-md:h-[27px]  bg-[#3657CB] border-none shadow-button-shadow rounded-xl max-md:rounded-[5px] text-white font-bold leading-[26.64px] max-LaptopL:absolute right-2 top-0" onClick={() => handelAuth()}>Войти</button>
                 </div>
                 {search && (
                     <div className='fixed top-0 left-0 z-[100] w-full h-full bg-[#1E2538]/70 flex justify-center'>
-                        <Search onClose={handelCloseSearch} />
+                        <Search onClose={handelClose} />
+                    </div>
+                )}
+                {auth && (
+                    <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-[#191E2E]/80 z-[100]">
+                        <Auth onClose={handelClose}/>
                     </div>
                 )}
             </div>
