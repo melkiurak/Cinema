@@ -82,7 +82,7 @@ export function Header() {
                     </div>
                 )}
                 {auth && (
-                    <div className="fixed top-0 left-0 right-0 bottom-0 flex items-center justify-center bg-[#191E2E]/80 z-[100]">
+                    <div className="fixed top-0 left-0  w-full h-full flex items-center justify-center bg-[#191E2E]/80 z-[100]">
                         <Auth onClose={handelClose}/>
                     </div>
                 )}
