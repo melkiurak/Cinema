@@ -36,8 +36,7 @@ export function NewFilm() {
         if (filterGenres === 'Все') {
             return true;
         }
-        const genresArray = film.genres.map(genre => genre.trim());
-        return genresArray.includes(filterGenres);
+        return film.genres.map(genre => genre.trim()).includes(filterGenres);
     });
 
     const handleAllFilm = () => {
